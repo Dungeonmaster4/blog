@@ -22,7 +22,7 @@ nav span {
   position: absolute;
   top: 1rem;
   left: .5rem;
-}
+} 
 
 .nav--insideWrapper {
   display: flex;
@@ -120,7 +120,6 @@ textarea {
   font-size: 30px;
 }
 
-/* GOOGLE BUTTOn */
 .login-with-google-btn {
   margin-top: 1rem;
   cursor: pointer;
@@ -173,7 +172,6 @@ textarea {
   flex-direction: column;
   width: 600px;
   height: auto;
-  /* max-height: 600px; */
   background-color: rgb(250, 250, 250);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   margin: 20px;
@@ -190,11 +188,8 @@ textarea {
 }
 
 .postHeader .deletePost {
-  /* flex: 50%; */
   display: flex;
   margin-left: auto;
-  /* flex-direction: column; */
-  /* align-items: flex-end; */
 }
 
 .deletePost button {
