@@ -9,10 +9,10 @@ function Loginpage({ setIsAuth}) {
         signInWithPopup(auth, provider).then((result) => {
             localStorage.setItem('isAuth', true)
             setIsAuth(true)
+            
             navigate('/')
         })
     }
-
     return ( 
     <div className="loginPage">
         <p>Sign in with Google to continue</p>

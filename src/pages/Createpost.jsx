@@ -12,19 +12,23 @@ function Createpost({isAuth}) {
         if (e.target.name==="postText") setPostText(e.target.value)
     }
 
+    let today = new Date()
+    let date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+
     const PostsCollection = collection(db, 'posts-data') //2nd is the name of the collectin we created on firebase website
     const createPost = async () => {
         await addDoc(PostsCollection, {
             title: title, 
             postText: postText, 
-            author: {name: auth.currentUser.displayName, id: auth.currentUser.uid }
+            author: {name: auth.currentUser.displayName, id: auth.currentUser.uid },
+            date: {postDate: date, forSort: Date.now()}
         })
         navigate('/')
     }
 
-    useEffect(() => {
-        if(!isAuth) navigate('/login')
-    }, []);
+    // useEffect(() => {
+    //     if(!isAuth) navigate('/login')
+    // }, []);
 
     return ( 
     <div className="createPostPage">

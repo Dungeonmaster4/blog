@@ -3,13 +3,18 @@ import './App.css';
 import Createpost from './pages/Createpost';
 import Homepage from './pages/Homepage';
 import Loginpage from './pages/Loginpage';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from './firebase-config';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import Navbar from './components/Navbar';
 
 
 function App() {
   const [isAuth, setisAuth] = useState(localStorage.getItem('isAuth'));
+  
+  // console.log(auth.currentUser.displayName.slice(0,1));
+ 
 
   const signUserOut =() => {
     signOut(auth).then(()=>{
@@ -20,17 +25,12 @@ function App() {
   }
   return (
     <BrowserRouter>
-    <nav>
-      <span>alpha ver.</span>
-      <div className='nav--insideWrapper'>
-        <Link to='/' className='navbar--btn'>Home</Link>
-        <Link to='/createpost' className='navbar--btn'>Create New Post</Link>
-        {!isAuth ? <Link to='/login' className='navbar--btn'>Login</Link> : <button className='navbar--btn' onClick={signUserOut}>LogOut</button>}
-      </div>
-    </nav>
+    <Navbar isAuth={isAuth} signUserOut={signUserOut} auth={auth}/>
       <Routes>
           <Route path='/' element={<Homepage isAuth={isAuth}/>}/>
-          <Route path='/createpost' element={<Createpost isAuth={isAuth}/>}/>
+          <Route element={<ProtectedRoute isAuth={isAuth}/>}>
+            <Route path='/createpost' element={<Createpost isAuth={isAuth}/>}/>
+          </Route>
           <Route path='/login' element={<Loginpage isAuth={isAuth} setIsAuth={setisAuth} />}/>
       </Routes>
     </BrowserRouter>
