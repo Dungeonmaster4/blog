@@ -10,3 +10,11 @@ export const NavbarLink = styled(Link)(({theme})=>({
     color: theme.palette.common.white
 }))
 
+export const LogOutButton = styled('button')((theme)=>({
+  backgroundColor: "inherit",
+  border: 'none',
+  fontSize: '1rem',
+  lineHeight: '1.5',
+  color: '#fff', // needs fix
+  cursor: "pointer"
+}))

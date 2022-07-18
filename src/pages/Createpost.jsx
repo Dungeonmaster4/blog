@@ -1,3 +1,4 @@
+import { TextField, Typography } from '@mui/material';
 import { addDoc, collection } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +17,7 @@ function Createpost({isAuth}) {
     let date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
 
     const PostsCollection = collection(db, 'posts-data') //2nd is the name of the collectin we created on firebase website
-    const createPost = async () => {
+    const createPost = async () => { 
         await addDoc(PostsCollection, {
             title: title, 
             postText: postText, 
@@ -33,29 +34,34 @@ function Createpost({isAuth}) {
     return ( 
     <div className="createPostPage">
         <div className="cpContainer">
-            <h1>Create New Post</h1>
+            <Typography variant='h5'>Create New Post</Typography>
             <div className="inputGp">
-                <label>Title:</label>
-                <input 
-                    name='title'
-                    type='text' 
-                    placeholder="Title..."
-                    onChange={handleChange}
+                
+                 <TextField 
+                    id="outlined-basic" 
+                    label="Title:" 
+                    variant="outlined"
+                    placeholder="Name your post..."
+                    onChange={handleChange} 
+                    color='secondary'
                 />
             </div>
             <div className="inputGp">
-                <label>Post:</label>
-                <textarea 
-                    placeholder="Post..."
+                <TextField
                     name='postText'
                     onChange={handleChange}
-                >
-
-                </textarea>
+                    id="outlined-textarea"
+                    label="Your post:"
+                    placeholder="Start typing..."
+                    multiline
+                    variant="outlined"
+                    color='secondary'
+                    rows={4}
+                />
             </div>
             <button onClick={createPost}>Post</button>
         </div>
-
+        
     </div>
      );
 }

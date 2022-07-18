@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase-config';
 import { useNavigate } from "react-router-dom";
 import PostSearch from '../components/Search';
+import { Button, Fab, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 
 function Homepage({isAuth}) {
@@ -17,8 +20,8 @@ function Homepage({isAuth}) {
             return (
                 post.title.toLowerCase().includes(searchField.toLowerCase()) || 
                 post.postText.toLowerCase().includes(searchField.toLowerCase()) ||
-                post.author.name.toLowerCase().includes(searchField.toLowerCase()) 
-                // post.date.date.toLowerCase().includes(searchField.toLowerCase())
+                post.author.name.toLowerCase().includes(searchField.toLowerCase()) ||              
+                post.date.postDate.includes(searchField)                
                 )
         }))
         console.log(filteredPosts);
@@ -37,7 +40,6 @@ function Homepage({isAuth}) {
         getPostList()
     }, []);
 
-    // .sort((a,b)=> a.date.forSort - b.date.forSort)
 
     const deletePost = async (id) => {
         const postToDelete = doc(db, 'posts-data', id)
@@ -49,7 +51,7 @@ function Homepage({isAuth}) {
     return ( 
         <div className='homePage'>
             <PostSearch setSearchField={setSearchField} />
-            {filteredPosts.map((post)=>{
+            {filteredPosts.sort((a,b)=>(b.date.forSort - a.date.forSort)).map((post)=>{
                 return  (
                 <div key={post.id} className='post'> 
                     <div className='postHeader'>
@@ -57,7 +59,13 @@ function Homepage({isAuth}) {
                             <h2>{post.title}</h2>
                         </div>
                         <div className='deletePost'>
-                            {isAuth && post.author.id === auth.currentUser.uid && <button onClick={() => deletePost(post.id)}>Delete post</button>}
+                            {isAuth && 
+                            post.author.id === auth.currentUser.uid && 
+                            <IconButton variant='contained'
+                                    size='small'
+                                    onClick={() => deletePost(post.id)}>
+                                        <DeleteIcon/>
+                            </IconButton>}
                         </div>
                     </div>
                     <div className='postTextContainer'> 
@@ -69,6 +77,7 @@ function Homepage({isAuth}) {
                     </div>
                 </div>)
             })}
+            <span>alpha 0.1</span>
         </div>
      );
 }

@@ -13,7 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
-import { NavbarLink } from '../pages/MUI-components';
+import { LogOutButton, NavbarLink } from '../pages/MUI-components';
+import FingerprintIcon from '@mui/icons-material/Fingerprint';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import { Fab, Fade, useScrollTrigger } from '@mui/material';
 
 
 const settings = ['coming soon...'];
@@ -37,12 +40,46 @@ const Navbar = ({isAuth, signUserOut}) => {
     setAnchorElUser(null);
   };
 
+
+  function ScrollTop(props) {
+    const { children, window } = props;
+    const trigger = useScrollTrigger({
+      target: window ? window() : undefined,
+      disableHysteresis: true,
+      threshold: 100,
+    });
+  
+    const handleFabClick = (event) => {
+      const anchor = (event.target.ownerDocument || document).querySelector(
+        '#back-to-top-anchor',
+      );
+  
+      if (anchor) {
+        anchor.scrollIntoView({
+          block: 'center',
+        });
+      }
+    }
+    return (
+      <Fade in={trigger}>
+        <Box
+          onClick={handleFabClick}
+          role="presentation"
+          sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        >
+          {children}
+        </Box>
+      </Fade>
+    );
+  }
+
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters id="back-to-top-anchor">
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
+          <Typography    //fix to useNavigate
             variant="h6"
             noWrap
             component="a"
@@ -97,7 +134,7 @@ const Navbar = ({isAuth, signUserOut}) => {
                     <NavbarLink to='/createpost'>Create New Post</NavbarLink>
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
-                    {!isAuth ? <NavbarLink to='/login'> Login </NavbarLink> : <button onClick={signUserOut}>LogOut</button>}
+                    {!isAuth ? <NavbarLink to='/login'> Login </NavbarLink> : <LogOutButton onClick={signUserOut}>LogOut</LogOutButton>}
                 </MenuItem>
 
             </Menu>
@@ -129,7 +166,7 @@ const Navbar = ({isAuth, signUserOut}) => {
                     <NavbarLink to='/createpost'>Create New Post</NavbarLink>
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
-                    {!isAuth ? <NavbarLink to='/login'> Login </NavbarLink> : <button onClick={signUserOut}>LogOut</button>}
+                    {!isAuth ? <NavbarLink to='/login'> Login </NavbarLink> : <LogOutButton onClick={signUserOut}>LogOut</LogOutButton>}
                 </MenuItem>
           </Box>
 
@@ -139,7 +176,12 @@ const Navbar = ({isAuth, signUserOut}) => {
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     {/* <Avatar>{auth.currentUser.displayName.slice(0,1)}</Avatar> */}
                     <Typography variant='h6' sx={{color: "#fff"}}>
-                        Online
+                        <Box display='flex' alignItems='center'>
+                          <FingerprintIcon sx={{color: 'var(--color-hightlight)'}}/>
+                          <Typography>
+                              Online
+                          </Typography>
+                        </Box>
                     </Typography> 
                 </IconButton>
                 </Tooltip>
@@ -170,6 +212,13 @@ const Navbar = ({isAuth, signUserOut}) => {
           </Box>
         </Toolbar>
       </Container>
+
+      <ScrollTop>
+        <Fab size="small" aria-label="scroll back to top">
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
+
     </AppBar>
   );
 };
